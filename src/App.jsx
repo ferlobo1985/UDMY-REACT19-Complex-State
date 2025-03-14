@@ -27,6 +27,16 @@ const App = ()=> {
       </button>
 
       <hr/>
+      <div>
+        {users.loading ? 'LOADING':null}
+      </div>
+      <ul>
+        { users ? users.users.map(user=>(
+          <li key={user.id}>
+              {user.name}
+          </li>
+        )):null}
+      </ul>
       <button onClick={()=>dispatch(fetchUsers())}>Get users</button>
     </>
   )

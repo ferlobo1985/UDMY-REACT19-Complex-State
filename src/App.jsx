@@ -1,56 +1,14 @@
-import { useSelector, useDispatch } from "react-redux"
-import { addMovie } from "./store/movies";
-import { setType, fetchUsers } from './store/users';
-import { useEffect } from "react";
+import { useContext } from "react"
+import { MyContext } from "./context"
 
 const App = ()=> {
-  const movies = useSelector( (state)=> state.movies.list);
-  const users = useSelector( (state)=> state.users);
-  const dispatch = useDispatch();
+  const context =  useContext(MyContext);
 
-  useEffect(()=>{
-    dispatch(fetchUsers())
-    .unwrap()
-    .then(response =>{
-      console.log(response)
-    })
-    .catch(error=>{
-      console.log(error)
-    })
-  },[])
-
+  console.log(context)
 
   return (
     <>
-      <h2>Movies</h2>
-      <ul>
-        { movies ?
-          movies.map( movie =>(
-            <li key={movie.id}>{movie.title}</li>
-          ))
-        :null}
-      </ul>
-      <hr/>
-      <button onClick={()=> dispatch(addMovie({id:3,title:'Batman'}))}>Add movie</button>
-
-      <hr/>
-      <h3>User type:{users.type}</h3>
-      <button onClick={()=>dispatch(setType('Admin'))}>
-        Set type
-      </button>
-
-      <hr/>
-      <div>
-        {users.loading ? 'LOADING':null}
-      </div>
-      <ul>
-        { users ? users.users.map(user=>(
-          <li key={user.id}>
-              {user.name}
-          </li>
-        )):null}
-      </ul>
-      <button onClick={()=>dispatch(fetchUsers())}>Get users</button>
+      <h2>My app</h2>
     </>
   )
 }

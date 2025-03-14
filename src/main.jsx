@@ -3,9 +3,12 @@ import { Provider } from 'react-redux'
 import App from './App.jsx'
 
 import { store } from './store/index.js'
+import { MyProvider } from './context/index.jsx'
 
 createRoot(document.getElementById('root')).render(
     <Provider store={store}>
-        <App />
+        <MyProvider>
+            <App />
+        </MyProvider>
     </Provider>
 )

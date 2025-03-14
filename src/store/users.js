@@ -3,14 +3,15 @@ import axios from 'axios'
 
 export const fetchUsers = createAsyncThunk(
     'users/fetchUsers',
-    async(obj,thunkAPI)=>{
+    async(obj,{ rejectWithValue, fulfillWithValue })=>{
         // thunkAPI.dispatch(testAsyncDispatch())
         // console.log(thunkAPI.getState())
         try {
             const res = await axios.get(`https://jsonplaceholder.typicode.com/users`);
-            return res.data;
+            //return res.data;
+            return fulfillWithValue(res.data)
         } catch(err){
-            return err;
+            return rejectWithValue('Oops, try again later')
         }
        
     }
@@ -41,8 +42,8 @@ export const usersSlice =  createSlice({
             state.loading = false;
             state.users = action.payload
         })
-        .addCase(fetchUsers.rejected,(state)=>{
-            console.log('REJECTED')
+        .addCase(fetchUsers.rejected,(state,action)=>{
+            console.log(action.payload)
             state.loading = false;
         })
     }

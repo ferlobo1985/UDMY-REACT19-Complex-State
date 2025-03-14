@@ -1,14 +1,44 @@
-import { createContext } from "react";
+import { createContext, useReducer } from "react";
+import axios from 'axios'
 
 const MyContext = createContext();
 
+const initialState = {
+    loading:false,
+    users:[]
+}
+
+const reducer = (state,action) => {
+    switch(action.type){
+        case "GET_USERS":
+            return {...state, users:action.payload.users}
+        case "HANDLE_LOADING":
+            return {...state,loading:!state.loading }
+        default:
+            return state;
+    }
+}
+
 const MyProvider = ({ children }) =>{
-    const values = [1,2,3,4];
+    const [users,dispatch] = useReducer(reducer,initialState);
+    
+
+    const getUsers = async() => {
+        const res = await axios.get(`https://jsonplaceholder.typicode.com/users`);
+        dispatch({
+            type:"GET_USERS",
+            payload:{
+                users:res.data
+            }
+        })
+    }
 
     return(
         <MyContext.Provider
-            value={{
-                values:values
+            value={{    
+                getUsers:getUsers,
+                handleLoading: ()=> dispatch({type:"HANDLE_LOADING"}),
+                users
             }}
         >
             {children}

@@ -13,7 +13,6 @@ export const fetchUsers = createAsyncThunk(
         } catch(err){
             return rejectWithValue('Oops, try again later')
         }
-       
     }
 )
 
